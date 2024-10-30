@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "632396907742",
+    "project_id": "aquabill-7490d",
+    "storage_bucket": "aquabill-7490d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632396907742:android:e1ce8eec82c8066281ae4f",
+        "android_client_info": {
+          "package_name": "com.example.aquabill"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDk67wyJ8Fgy-0t4lQ__EYTs4Rl-jyv2U4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
