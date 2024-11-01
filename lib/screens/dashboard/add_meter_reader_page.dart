@@ -1,200 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_auth/models/UserModel.dart';
-// import 'package:flutter_auth/screens/home/home.dart';
-// import 'package:flutter_auth/services/auth.dart';
-// import 'package:provider/provider.dart';
-
-// class AddMeterReaderPage extends StatefulWidget {
-//   const AddMeterReaderPage({Key? key}) : super(key: key);
-
-//   @override
-//   State<AddMeterReaderPage> createState() => _AddMeterReaderPageState();
-// }
-
-// final TextEditingController emailController = TextEditingController();
-// final TextEditingController passwordController = TextEditingController();
-// final AuthServices _auth = AuthServices();
-
-// String email = "";
-// String password = "";
-
-// class _AddMeterReaderPageState extends State<AddMeterReaderPage> {
-//   Future<void> _addMeterReader(String email, String password) async {
-//     dynamic result = await _auth.registerWithEmailAndPassword(email, password);
-//     if (result != null) {
-
-//       // Navigator.pushReplacement(
-//       //   context,
-//       //   MaterialPageRoute(
-//       //       builder: (context) => const Home()), // Redirect to Home
-//       // );
-//     } else {
-//       setState(() {
-//         // error = "Please enter a valid email!";
-//       });
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     setState(() {
-//       email = emailController.text.trim();
-//       password = passwordController.text.trim();
-//     });
-
-//     final user = Provider.of<UserModel?>(context);
-//     String? uid = user?.uid;
-//     const role = "meeterreader";
-
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Add Meter Reader'),
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Column(
-//           children: [
-//             TextField(
-//               controller: emailController,
-//               decoration: const InputDecoration(
-//                 labelText: 'Meter Reader Email',
-//               ),
-//             ),
-//             const SizedBox(height: 10),
-//             TextField(
-//               controller: passwordController,
-//               obscureText: true,
-//               decoration: const InputDecoration(
-//                 labelText: 'Password',
-//               ),
-//             ),
-//             const SizedBox(height: 20),
-//             ElevatedButton(
-//               onPressed: () async {
-//                 if (email != null && password != null) {
-//                   _addMeterReader(email, password);
-//                 } else {
-//                   print("Enter Email and Password");
-//                 }
-
-//                 //ToDo add method
-//               },
-//               // Firebase logic to add a meter reader
-
-//               child: const Text('Add Reader'),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// import 'package:flutter/material.dart';
-// import 'package:flutter_auth/models/UserModel.dart';
-// import 'package:flutter_auth/screens/dashboard/area_officer_dashboard.dart';
-// import 'package:flutter_auth/screens/home/home.dart';
-// import 'package:flutter_auth/services/auth.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:provider/provider.dart';
-
-// class AddMeterReaderPage extends StatefulWidget {
-//   const AddMeterReaderPage({Key? key}) : super(key: key);
-
-//   @override
-//   State<AddMeterReaderPage> createState() => _AddMeterReaderPageState();
-// }
-
-// final TextEditingController emailController = TextEditingController();
-// final TextEditingController passwordController = TextEditingController();
-// final AuthServices _auth = AuthServices();
-
-// String email = "";
-// String password = "";
-
-// class _AddMeterReaderPageState extends State<AddMeterReaderPage> {
-//   Future<void> _addMeterReader(String email, String password) async {
-//     // Register user with email and password
-//     dynamic results =
-//         await _auth.registerWithEmailAndPasswordAsAreaM(email, password);
-
-//     if (results != null) {
-//       print("Result is not null!");
-
-//       // Get the newly created user's UID
-//       String uid = results.uid;
-//       const role = "meterreader";
-
-//       // Save user details in Firestore and check if operation was successful
-//       try {
-//         await FirebaseFirestore.instance.collection('user').doc(uid).set({
-//           'email': email,
-//           'role': role,
-//           'uid': uid,
-//         });
-
-//         // Only navigate if data was successfully saved in Firestore
-//         Navigator.pushReplacement(
-//           context,
-//           MaterialPageRoute(
-//               builder: (context) =>
-//                   const AreaOfficerDashboard()), // Redirect to Dashboard
-//         );
-//       } catch (e) {
-//         print("Error saving user data to Firestore: $e");
-//       }
-//     } else {
-//       setState(() {
-//         // Show an error if registration fails
-//         print("Registration failed. Please check the email and password.");
-//       });
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Add Meter Reader'),
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Column(
-//           children: [
-//             TextField(
-//               controller: emailController,
-//               decoration: const InputDecoration(
-//                 labelText: 'Meter Reader Email',
-//               ),
-//             ),
-//             const SizedBox(height: 10),
-//             TextField(
-//               controller: passwordController,
-//               obscureText: true,
-//               decoration: const InputDecoration(
-//                 labelText: 'Password',
-//               ),
-//             ),
-//             const SizedBox(height: 20),
-//             ElevatedButton(
-//               onPressed: () async {
-//                 email = emailController.text.trim();
-//                 password = passwordController.text.trim();
-//                 if (email.isNotEmpty && password.isNotEmpty) {
-//                   await _addMeterReader(email, password);
-//                 } else {
-//                   print("Enter Email and Password");
-//                 }
-//               },
-//               child: const Text('Add Reader'),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/models/UserModel.dart';
 import 'package:flutter_auth/screens/dashboard/area_officer_dashboard.dart';
@@ -212,12 +15,23 @@ class AddMeterReaderPage extends StatefulWidget {
 
 final TextEditingController emailController = TextEditingController();
 final TextEditingController passwordController = TextEditingController();
+final TextEditingController confirmPasswordController = TextEditingController();
 final AuthServices _auth = AuthServices();
 
 String email = "";
 String password = "";
+String confirmPassword = "";
+String? selectedArea; // To hold the selected area
 
 class _AddMeterReaderPageState extends State<AddMeterReaderPage> {
+  final List<String> areas = [
+    'Area 1',
+    'Area 2',
+    'Area 3',
+    'Area 4',
+    // Add more areas as needed
+  ];
+
   Future<void> _addMeterReader(String email, String password) async {
     try {
       // Firebase REST API endpoint for user registration
@@ -245,6 +59,7 @@ class _AddMeterReaderPageState extends State<AddMeterReaderPage> {
           'email': email,
           'role': role,
           'uid': uid,
+          'area': selectedArea, // Save the selected area
         });
 
         // Navigate to Area Officer Dashboard upon successful registration
@@ -264,12 +79,32 @@ class _AddMeterReaderPageState extends State<AddMeterReaderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Meter Reader'),
+        title: const Text(
+          'Add Meter Reader',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        backgroundColor: Colors.blue,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            DropdownButton<String>(
+              hint: const Text('Select Area'),
+              value: selectedArea,
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedArea = newValue;
+                });
+              },
+              items: areas.map<DropdownMenuItem<String>>((String area) {
+                return DropdownMenuItem<String>(
+                  value: area,
+                  child: Text(area),
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 10),
             TextField(
               controller: emailController,
               decoration: const InputDecoration(
@@ -284,15 +119,30 @@ class _AddMeterReaderPageState extends State<AddMeterReaderPage> {
                 labelText: 'Password',
               ),
             ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: confirmPasswordController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                labelText: 'Confirm Password',
+              ),
+            ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 email = emailController.text.trim();
                 password = passwordController.text.trim();
-                if (email.isNotEmpty && password.isNotEmpty) {
-                  await _addMeterReader(email, password);
+                confirmPassword = confirmPasswordController.text.trim();
+                if (email.isNotEmpty &&
+                    password.isNotEmpty &&
+                    selectedArea != null) {
+                  if (password == confirmPassword) {
+                    await _addMeterReader(email, password);
+                  } else {
+                    print("Passwords do not match");
+                  }
                 } else {
-                  print("Enter Email and Password");
+                  print("Enter all fields");
                 }
               },
               child: const Text('Add Reader'),

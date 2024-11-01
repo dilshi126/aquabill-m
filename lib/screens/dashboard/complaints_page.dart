@@ -9,17 +9,31 @@ class ComplaintsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Submit Complaint'),
+        title: const Text(
+          'Submit Complaint',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.blue, // Set AppBar color to blue
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextField(
               controller: complaintController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Enter your complaint',
+                border: OutlineInputBorder(),
+                filled: true,
+                fillColor: Colors
+                    .grey[200], // Light grey background for the text field
               ),
+              maxLines: 5, // Allow multiple lines for complaints
+              minLines: 3, // Minimum height for the text field
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -29,7 +43,18 @@ class ComplaintsPage extends StatelessWidget {
                   const SnackBar(content: Text('Complaint Submitted')),
                 );
               },
-              child: const Text('Submit'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue, // Button color
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15), // Button padding
+                textStyle: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
+              child: const Text(
+                'Submit',
+              ),
             ),
           ],
         ),

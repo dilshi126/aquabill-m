@@ -18,6 +18,10 @@ class _UploadMeterReadingPageState extends State<UploadMeterReadingPage> {
   // Dummy last month reading (Replace with data from Firebase or API in real use)
   final int lastMonthReading = 120;
 
+  // Sample customer list (replace with actual data)
+  final List<String> customers = ['Customer A', 'Customer B', 'Customer C'];
+  String? selectedCustomer;
+
   Future<void> _pickImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
@@ -41,7 +45,8 @@ class _UploadMeterReadingPageState extends State<UploadMeterReadingPage> {
         readingController.text = meterReading.toString();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Meter reading not detected. Try again.')),
+          const SnackBar(
+              content: Text('Meter reading not detected. Try again.')),
         );
       }
     } catch (e) {
@@ -79,7 +84,10 @@ class _UploadMeterReadingPageState extends State<UploadMeterReadingPage> {
     final accountNumber = accountNumberController.text;
     final currentReading = int.tryParse(readingController.text);
 
-    if (accountNumber.isEmpty || currentReading == null || _image == null) {
+    if (selectedCustomer == null ||
+        accountNumber.isEmpty ||
+        currentReading == null ||
+        _image == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content: Text('Please fill all fields and upload a photo.')),
@@ -102,7 +110,7 @@ class _UploadMeterReadingPageState extends State<UploadMeterReadingPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
           content: Text(
-              'Reading Submitted. Bill: \$${billAmount.toStringAsFixed(2)}')),
+              'Reading Submitted for $selectedCustomer. Bill: \$${billAmount.toStringAsFixed(2)}')),
     );
 
     // TODO: Upload data to Firebase
@@ -112,12 +120,39 @@ class _UploadMeterReadingPageState extends State<UploadMeterReadingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Upload Meter Reading'),
+        backgroundColor: Colors.blue,
+        title: const Text(
+          'Upload Meter Reading',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            DropdownButtonFormField<String>(
+              value: selectedCustomer,
+              hint: const Text('Select Customer'),
+              items: customers.map((String customer) {
+                return DropdownMenuItem<String>(
+                  value: customer,
+                  child: Text(customer),
+                );
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  selectedCustomer = value;
+                });
+              },
+              decoration: const InputDecoration(
+                labelText: 'Customer',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 10),
             TextField(
               controller: accountNumberController,
               decoration: const InputDecoration(
@@ -138,11 +173,25 @@ class _UploadMeterReadingPageState extends State<UploadMeterReadingPage> {
                 : Image.file(_image!, height: 200),
             ElevatedButton(
               onPressed: _pickImage,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue, // Background color
+                textStyle: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               child: const Text('Scan Meter & Upload Photo'),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _submitReading,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue, // Background color
+                textStyle: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               child: const Text('Submit Reading'),
             ),
           ],

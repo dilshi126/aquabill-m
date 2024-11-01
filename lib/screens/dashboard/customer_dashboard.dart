@@ -30,7 +30,8 @@ class CustomerDashboard extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
+      body: SingleChildScrollView(
+        // Allow scrolling for the whole body
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
@@ -50,34 +51,27 @@ class CustomerDashboard extends StatelessWidget {
             const SizedBox(height: 16),
 
             // Functions Section
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    GridView.count(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      children: [
-                        _dashboardTile(context, 'View Monthly Bill',
-                            Icons.receipt, BillsPage()),
-                        _dashboardTile(context, 'Scheduled Maintenance',
-                            Icons.build, MaintenanceInfo()),
-                        _dashboardTile(
-                            context, 'Pay Bill', Icons.payment, PaymentPage()),
-                        _dashboardTile(context, 'Submit Complaint',
-                            Icons.report_problem, ComplaintsPage()),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    _logoutButton(context, _auth), // Styled logout button
-                    const SizedBox(height: 20),
-                  ],
-                ),
-              ),
+            GridView.count(
+              shrinkWrap: true,
+              physics:
+                  const NeverScrollableScrollPhysics(), // Prevent scrolling
+              crossAxisCount: 2,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              children: [
+                _dashboardTile(
+                    context, 'View Monthly Bill', Icons.receipt, BillsPage()),
+                _dashboardTile(context, 'Scheduled Maintenance', Icons.build,
+                    MaintenanceInfo()),
+                _dashboardTile(
+                    context, 'Pay Bill', Icons.payment, PaymentPage()),
+                _dashboardTile(context, 'Submit Complaint',
+                    Icons.report_problem, ComplaintsPage()),
+              ],
             ),
+            const SizedBox(height: 20),
+            _logoutButton(context, _auth), // Styled logout button
+            const SizedBox(height: 20),
 
             // Footer Section - now part of scrollable content
             Footer(),
