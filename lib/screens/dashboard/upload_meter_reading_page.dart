@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 
 class UploadMeterReadingPage extends StatefulWidget {
   const UploadMeterReadingPage({Key? key}) : super(key: key);
@@ -25,7 +26,40 @@ class _UploadMeterReadingPageState extends State<UploadMeterReadingPage> {
       setState(() {
         _image = File(pickedFile.path);
       });
+      await _performOCR(_image!);
     }
+  }
+
+  Future<void> _performOCR(File imageFile) async {
+    final inputImage = InputImage.fromFile(imageFile);
+    final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
+
+    try {
+      final recognizedText = await textRecognizer.processImage(inputImage);
+      final meterReading = _extractMeterReading(recognizedText.text);
+      if (meterReading != null) {
+        readingController.text = meterReading.toString();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Meter reading not detected. Try again.')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to recognize text: $e')),
+      );
+    } finally {
+      textRecognizer.close();
+    }
+  }
+
+  int? _extractMeterReading(String text) {
+    final meterReadingPattern = RegExp(r'\b\d{3,}\b');
+    final match = meterReadingPattern.firstMatch(text);
+    if (match != null) {
+      return int.parse(match.group(0)!);
+    }
+    return null;
   }
 
   int calculateUsage(int lastMonthReading, int currentReading) {
@@ -52,7 +86,7 @@ class _UploadMeterReadingPageState extends State<UploadMeterReadingPage> {
       );
       return;
     }
-
+    print(readingController.text);
     if (currentReading < lastMonthReading) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
